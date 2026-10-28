@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI StudyMate — Study Smarter, Not Harder</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav">
+  <div class="container nav__inner">
+    <a href="index.html" class="nav__brand">🎓 AI <span>StudyMate</span></a>
+    <div class="nav__links" id="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="pages/summarizer.html">Summarizer</a>
+      <a href="pages/quiz.html">Quiz</a>
+      <a href="pages/explainer.html">Explainer</a>
+      <a href="pages/scheduler.html">Scheduler</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <a href="dashboard.html" class="btn btn--primary btn--sm">Open App</a>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container--sm">
+    <div class="hero__badge">✨ AI-Powered Study Assistant</div>
+    <h1>Study Smarter with <span>AI StudyMate</span></h1>
+    <p>Summarize lecture notes, practice with AI-generated quizzes, get instant concept explanations, and organize your weekly study schedule — all in one place.</p>
+    <div class="hero__actions">
+      <a href="dashboard.html" class="btn btn--primary btn--lg">Get Started Free</a>
+      <a href="#features" class="btn btn--outline btn--lg">See Features</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <h2>Everything you need to ace your exams</h2>
+      <p>Four core tools designed specifically for university students.</p>
+    </div>
+    <div class="features__grid">
+
+      <a href="pages/summarizer.html" class="feature-card">
+        <div class="feature-card__icon feature-card__icon--blue">📝</div>
+        <h3>Note Summarizer</h3>
+        <p>Paste your lecture notes and get a clean, structured summary with key takeaways highlighted.</p>
+        <br>
+        <span class="badge badge--blue">AI-Powered</span>
+      </a>
+
+      <a href="pages/quiz.html" class="feature-card">
+        <div class="feature-card__icon feature-card__icon--purple">🧪</div>
+        <h3>Practice Quiz</h3>
+        <p>Generate multiple-choice questions on any topic to test your understanding before exams.</p>
+        <br>
+        <span class="badge badge--purple">AI-Powered</span>
+      </a>
+
+      <a href="pages/explainer.html" class="feature-card">
+        <div class="feature-card__icon feature-card__icon--green">💡</div>
+        <h3>Concept Explainer</h3>
+        <p>Ask any complex concept to be explained in plain language with analogies and examples.</p>
+        <br>
+        <span class="badge badge--green">AI-Powered</span>
+      </a>
+
+      <a href="pages/scheduler.html" class="feature-card">
+        <div class="feature-card__icon feature-card__icon--orange">📅</div>
+        <h3>Study Scheduler</h3>
+        <p>Build a personalized weekly study plan — manually or with AI suggestions for your subjects.</p>
+        <br>
+        <span class="badge badge--orange">+ AI Assist</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section style="background: var(--bg); padding: 4rem 0; border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-header">
+      <h2>How it works</h2>
+      <p>Three steps to more effective studying.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;text-align:center;max-width:760px;margin:0 auto;">
+      <div>
+        <div style="font-size:2rem;margin-bottom:0.75rem;">1️⃣</div>
+        <h4 style="margin-bottom:0.4rem;">Paste your material</h4>
+        <p style="font-size:0.88rem;">Drop in lecture notes, a topic name, or a concept you're struggling with.</p>
+      </div>
+      <div>
+        <div style="font-size:2rem;margin-bottom:0.75rem;">2️⃣</div>
+        <h4 style="margin-bottom:0.4rem;">Let AI process it</h4>
+        <p style="font-size:0.88rem;">The AI summarizes, generates questions, or explains — in seconds.</p>
+      </div>
+      <div>
+        <div style="font-size:2rem;margin-bottom:0.75rem;">3️⃣</div>
+        <h4 style="margin-bottom:0.4rem;">Study and retain</h4>
+        <p style="font-size:0.88rem;">Review structured outputs, test yourself, and track your progress on the dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section style="padding:4rem 0;text-align:center;">
+  <div class="container--sm">
+    <h2 style="margin-bottom:0.75rem;">Ready to study smarter?</h2>
+    <p style="margin-bottom:1.75rem;">Open the app — no account needed. All data stays in your browser.</p>
+    <a href="dashboard.html" class="btn btn--primary btn--lg">Open Dashboard →</a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <p>🎓 <strong>AI StudyMate</strong> — A study assistant for university students.</p>
+    <p style="margin-top:0.4rem;font-size:0.8rem;">All data is stored locally in your browser. No account required.</p>
+  </div>
+</footer>
+
+<script src="js/storage.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

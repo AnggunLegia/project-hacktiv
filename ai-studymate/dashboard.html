@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — AI StudyMate</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav">
+  <div class="container nav__inner">
+    <a href="index.html" class="nav__brand">🎓 AI <span>StudyMate</span></a>
+    <div class="nav__links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="pages/summarizer.html">Summarizer</a>
+      <a href="pages/quiz.html">Quiz</a>
+      <a href="pages/explainer.html">Explainer</a>
+      <a href="pages/scheduler.html">Scheduler</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <button class="btn btn--outline btn--sm" id="settings-btn" title="API Key Settings">⚙ Settings</button>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== APP LAYOUT ===== -->
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__label">Main</div>
+      <a href="dashboard.html" class="sidebar__link active">
+        <span class="sidebar__icon">🏠</span> Dashboard
+      </a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">AI Tools</div>
+      <a href="pages/summarizer.html" class="sidebar__link">
+        <span class="sidebar__icon">📝</span> Note Summarizer
+      </a>
+      <a href="pages/quiz.html" class="sidebar__link">
+        <span class="sidebar__icon">🧪</span> Practice Quiz
+      </a>
+      <a href="pages/explainer.html" class="sidebar__link">
+        <span class="sidebar__icon">💡</span> Concept Explainer
+      </a>
+      <a href="pages/scheduler.html" class="sidebar__link">
+        <span class="sidebar__icon">📅</span> Study Scheduler
+      </a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">Account</div>
+      <a href="#" class="sidebar__link" id="settings-btn-side">
+        <span class="sidebar__icon">⚙</span> Settings
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <!-- AI Banner -->
+    <div class="ai-banner" id="ai-status-banner">
+      ⚠️ No API key configured. Showing demo output.
+      <a href="#" id="open-settings-from-banner">Add key in Settings →</a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>Dashboard</h2>
+      <p>Welcome back! Here's an overview of your study activity.</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem;" id="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card__label">Summaries</div>
+        <div class="stat-card__value" id="stat-summaries">0</div>
+        <div class="stat-card__sub">notes summarized</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Quizzes</div>
+        <div class="stat-card__value" id="stat-quizzes">0</div>
+        <div class="stat-card__sub">completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Concepts</div>
+        <div class="stat-card__value" id="stat-explanations">0</div>
+        <div class="stat-card__sub">explained</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Tasks This Week</div>
+        <div class="stat-card__value" id="stat-tasks">0</div>
+        <div class="stat-card__sub">scheduled</div>
+      </div>
+    </div>
+
+    <!-- Feature Cards + Recent Activity -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;" class="dashboard-grid">
+
+      <!-- Feature Shortcuts -->
+      <div class="card">
+        <div class="card__header"><h3>AI Tools</h3></div>
+        <div class="card__body" style="display:flex;flex-direction:column;gap:0.75rem;">
+          <a href="pages/summarizer.html" class="feature-card" style="padding:1rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div class="feature-card__icon feature-card__icon--blue" style="width:36px;height:36px;font-size:1.1rem;margin:0;flex-shrink:0;">📝</div>
+              <div>
+                <div style="font-weight:600;font-size:0.92rem;color:var(--text);">Note Summarizer</div>
+                <div style="font-size:0.82rem;color:var(--muted);">Condense your lecture notes</div>
+              </div>
+            </div>
+          </a>
+          <a href="pages/quiz.html" class="feature-card" style="padding:1rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div class="feature-card__icon feature-card__icon--purple" style="width:36px;height:36px;font-size:1.1rem;margin:0;flex-shrink:0;">🧪</div>
+              <div>
+                <div style="font-weight:600;font-size:0.92rem;color:var(--text);">Practice Quiz</div>
+                <div style="font-size:0.82rem;color:var(--muted);">Test your knowledge</div>
+              </div>
+            </div>
+          </a>
+          <a href="pages/explainer.html" class="feature-card" style="padding:1rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div class="feature-card__icon feature-card__icon--green" style="width:36px;height:36px;font-size:1.1rem;margin:0;flex-shrink:0;">💡</div>
+              <div>
+                <div style="font-weight:600;font-size:0.92rem;color:var(--text);">Concept Explainer</div>
+                <div style="font-size:0.82rem;color:var(--muted);">Plain-language explanations</div>
+              </div>
+            </div>
+          </a>
+          <a href="pages/scheduler.html" class="feature-card" style="padding:1rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div class="feature-card__icon feature-card__icon--orange" style="width:36px;height:36px;font-size:1.1rem;margin:0;flex-shrink:0;">📅</div>
+              <div>
+                <div style="font-weight:600;font-size:0.92rem;color:var(--text);">Study Scheduler</div>
+                <div style="font-size:0.82rem;color:var(--muted);">Plan your week</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="card">
+        <div class="card__header">
+          <h3>Recent Activity</h3>
+          <button class="btn btn--ghost btn--sm" id="clear-history-btn" title="Clear all history">Clear</button>
+        </div>
+        <div class="card__body" id="recent-activity-list">
+          <div class="empty-state">
+            <div class="empty-state__icon">📂</div>
+            <p>No activity yet. Start using the tools above!</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /dashboard-grid -->
+
+  </main>
+</div><!-- /app-layout -->
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div id="settings-overlay" hidden style="position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;"></div>
+<div id="settings-modal" hidden role="dialog" aria-modal="true" aria-labelledby="settings-title"
+  style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:210;width:90%;max-width:440px;">
+  <div class="card">
+    <div class="card__header">
+      <h3 id="settings-title">⚙ Settings</h3>
+      <button class="btn btn--ghost btn--sm" id="settings-close">✕</button>
+    </div>
+    <div class="card__body">
+      <form id="settings-form">
+        <div class="form-group">
+          <label class="form-label" for="api-key-input">Groq API Key <span>(optional)</span></label>
+          <input type="password" class="form-control" id="api-key-input" placeholder="gsk_..." autocomplete="off">
+          <p class="form-hint">Your key is stored only in your browser's localStorage and is sent directly to api.groq.com — never to any third-party server. Get a free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="model-display">AI Model</label>
+          <input type="text" class="form-control" id="model-display" value="llama-3.3-70b-versatile" readonly style="background:var(--surface);">
+          <p class="form-hint">Model can be changed in <code>js/ai.js → AI_CONFIG.model</code>. See <a href="https://console.groq.com/docs/models" target="_blank" rel="noopener">Groq model docs</a> for alternatives.</p>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Save Settings</button>
+          <span id="settings-saved" style="display:none;color:var(--success);font-size:0.88rem;">✓ Saved!</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // Wire sidebar settings link
+  document.getElementById('settings-btn-side')?.addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('settings-btn')?.click();
+  });
+
+  // Populate stats
+  (function loadStats() {
+    const s = getStats();
+    document.getElementById('stat-summaries').textContent    = s.summaries;
+    document.getElementById('stat-quizzes').textContent      = s.quizzesDone;
+    document.getElementById('stat-explanations').textContent = s.explanations;
+    document.getElementById('stat-tasks').textContent        = s.tasksThisWeek;
+  })();
+
+  // Populate recent activity
+  (function loadActivity() {
+    const list = getRecentActivity();
+    const el   = document.getElementById('recent-activity-list');
+    if (!list.length) return;
+    el.innerHTML = '<div class="history-list">' +
+      list.map(item => `
+        <div class="history-item">
+          <div class="history-item__icon">${item.icon}</div>
+          <div class="history-item__meta">
+            <div class="history-item__title">${escHtml(item.title)}</div>
+            <div class="history-item__desc">${escHtml(item.desc)}</div>
+          </div>
+          <div class="history-item__time">${timeAgo(item.ts)}</div>
+        </div>`).join('') + '</div>';
+  })();
+
+  // Clear history
+  document.getElementById('clear-history-btn')?.addEventListener('click', () => {
+    if (!confirm('Clear all history? This cannot be undone.')) return;
+    localStorage.removeItem('asm_summaries');
+    localStorage.removeItem('asm_quiz_history');
+    localStorage.removeItem('asm_explanations');
+    location.reload();
+  });
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note Summarizer — AI StudyMate</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav">
+  <div class="container nav__inner">
+    <a href="../index.html" class="nav__brand">🎓 AI <span>StudyMate</span></a>
+    <div class="nav__links" id="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../dashboard.html">Dashboard</a>
+      <a href="summarizer.html" class="active">Summarizer</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="explainer.html">Explainer</a>
+      <a href="scheduler.html">Scheduler</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <button class="btn btn--outline btn--sm" id="settings-btn">⚙ Settings</button>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== APP LAYOUT ===== -->
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__label">Main</div>
+      <a href="../dashboard.html" class="sidebar__link">
+        <span class="sidebar__icon">🏠</span> Dashboard
+      </a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">AI Tools</div>
+      <a href="summarizer.html" class="sidebar__link active">
+        <span class="sidebar__icon">📝</span> Note Summarizer
+      </a>
+      <a href="quiz.html" class="sidebar__link">
+        <span class="sidebar__icon">🧪</span> Practice Quiz
+      </a>
+      <a href="explainer.html" class="sidebar__link">
+        <span class="sidebar__icon">💡</span> Concept Explainer
+      </a>
+      <a href="scheduler.html" class="sidebar__link">
+        <span class="sidebar__icon">📅</span> Study Scheduler
+      </a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">Account</div>
+      <a href="#" class="sidebar__link" id="settings-btn-side">
+        <span class="sidebar__icon">⚙</span> Settings
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <div class="ai-banner" id="ai-status-banner">⚠️ No API key configured.</div>
+
+    <div class="page-header">
+      <h2>📝 Note Summarizer</h2>
+      <p>Paste your lecture notes and get a structured, easy-to-review summary.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+
+      <!-- Input panel -->
+      <div class="card">
+        <div class="card__header"><h3>Your Notes</h3></div>
+        <div class="card__body">
+          <div class="form-group">
+            <label class="form-label" for="notes-topic">Topic / Subject <span>(optional)</span></label>
+            <input type="text" class="form-control" id="notes-topic" placeholder="e.g. Photosynthesis, French Revolution…">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="notes-input">Lecture Notes *</label>
+            <textarea class="form-control" id="notes-input" placeholder="Paste your lecture notes here…" style="min-height:240px;" required></textarea>
+            <p class="form-hint">Paste as much text as you like. The AI will condense it for you.</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="summary-style">Summary Style</label>
+            <select class="form-control" id="summary-style">
+              <option value="concise">Concise — bullet points</option>
+              <option value="detailed">Detailed — paragraphs + bullets</option>
+              <option value="outline">Outline — hierarchical structure</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--primary" id="summarize-btn">✨ Summarize Notes</button>
+            <button class="btn btn--ghost" id="clear-input-btn">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output panel -->
+      <div class="card">
+        <div class="card__header">
+          <h3>Summary</h3>
+          <button class="btn btn--outline btn--sm" id="copy-summary-btn" style="display:none;">Copy</button>
+        </div>
+        <div class="card__body">
+          <div class="result-box result-box--empty" id="summary-output">
+            Your summary will appear here.
+          </div>
+        </div>
+        <div class="card__footer" id="summary-footer" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.82rem;color:var(--muted);" id="summary-meta"></span>
+            <button class="btn btn--outline btn--sm" id="save-summary-btn">💾 Save</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- History -->
+    <div style="margin-top:2rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+        <h3>Saved Summaries</h3>
+        <button class="btn btn--ghost btn--sm" id="refresh-history-btn">Refresh</button>
+      </div>
+      <div id="summaries-history"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Settings Modal -->
+<div id="settings-overlay" hidden style="position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;"></div>
+<div id="settings-modal" hidden role="dialog" aria-modal="true" aria-labelledby="settings-title"
+  style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:210;width:90%;max-width:440px;">
+  <div class="card">
+    <div class="card__header">
+      <h3 id="settings-title">⚙ Settings</h3>
+      <button class="btn btn--ghost btn--sm" id="settings-close">✕</button>
+    </div>
+    <div class="card__body">
+      <form id="settings-form">
+        <div class="form-group">
+          <label class="form-label" for="api-key-input">Groq API Key <span>(optional)</span></label>
+          <input type="password" class="form-control" id="api-key-input" placeholder="gsk_..." autocomplete="off">
+          <p class="form-hint">Stored only in your browser's localStorage and sent directly to api.groq.com. Get a free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>.</p>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Save</button>
+          <span id="settings-saved" style="display:none;color:var(--success);font-size:0.88rem;">✓ Saved!</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  document.getElementById('settings-btn-side')?.addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('settings-btn')?.click();
+  });
+
+  let lastResult = null;
+
+  const btn         = document.getElementById('summarize-btn');
+  const output      = document.getElementById('summary-output');
+  const footer      = document.getElementById('summary-footer');
+  const meta        = document.getElementById('summary-meta');
+  const copyBtn     = document.getElementById('copy-summary-btn');
+  const saveBtn     = document.getElementById('save-summary-btn');
+
+  document.getElementById('clear-input-btn').addEventListener('click', () => {
+    document.getElementById('notes-input').value = '';
+    document.getElementById('notes-topic').value = '';
+    renderEmpty(output, 'Your summary will appear here.');
+    footer.style.display = 'none';
+    copyBtn.style.display = 'none';
+    lastResult = null;
+  });
+
+  btn.addEventListener('click', async () => {
+    const notes = document.getElementById('notes-input').value.trim();
+    if (!notes) { alert('Please paste some notes first.'); return; }
+    const style = document.getElementById('summary-style').value;
+    setLoading(btn, output, true, 'Summarizing…');
+    const res = await aiSummarize(notes, style);
+    setLoading(btn, null, false);
+    // Show error toast if the live API failed and we fell back to demo
+    if (res.errorMessage) showErrorMessage(output.parentElement, res.errorMessage);
+    renderResult(output, res.text, res.isDemo);
+    lastResult = { text: res.text, isDemo: res.isDemo };
+    const wordCount = notes.split(/\s+/).length;
+    meta.textContent = `${wordCount} words input · ${res.isDemo ? '🎓 Demo' : '✅ Live AI'} response`;
+    footer.style.display = '';
+    copyBtn.style.display = '';
+    refreshAiBanner();
+  });
+
+  copyBtn.addEventListener('click', () => {
+    if (lastResult) navigator.clipboard.writeText(lastResult.text).then(() => {
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => copyBtn.textContent = 'Copy', 1500);
+    });
+  });
+
+  saveBtn.addEventListener('click', () => {
+    if (!lastResult) return;
+    const topic   = document.getElementById('notes-topic').value.trim() || 'Untitled';
+    const preview = lastResult.text.slice(0, 80);
+    saveSummary({ topic, preview, full: lastResult.text });
+    saveBtn.textContent = '✓ Saved!';
+    setTimeout(() => saveBtn.textContent = '💾 Save', 1500);
+    loadHistory();
+  });
+
+  document.getElementById('refresh-history-btn').addEventListener('click', loadHistory);
+
+  function loadHistory() {
+    const el   = document.getElementById('summaries-history');
+    const list = getSummaries();
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-state"><div class="empty-state__icon">📂</div><p>No saved summaries yet.</p></div>';
+      return;
+    }
+    el.innerHTML = '<div class="history-list">' + list.map(s => `
+      <div class="history-item">
+        <div class="history-item__icon">📝</div>
+        <div class="history-item__meta">
+          <div class="history-item__title">${escHtml(s.topic)}</div>
+          <div class="history-item__desc">${escHtml(s.preview)}…</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span class="history-item__time">${timeAgo(s.ts)}</span>
+          <button class="btn btn--ghost btn--sm del-btn" data-id="${s.id}" title="Delete">✕</button>
+        </div>
+      </div>`).join('') + '</div>';
+    el.querySelectorAll('.del-btn').forEach(b => b.addEventListener('click', () => {
+      deleteSummary(Number(b.dataset.id)); loadHistory();
+    }));
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  loadHistory();
+</script>
+</body>
+</html>

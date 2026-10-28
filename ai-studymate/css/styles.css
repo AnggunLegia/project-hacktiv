@@ -1,0 +1,213 @@
+/* =========================================================
+   AI StudyMate — Base Styles
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #ffffff;
+  --surface:     #f7f8fa;
+  --border:      #e5e7eb;
+  --text:        #1f2328;
+  --muted:       #57606a;
+  --accent:      #3b82d4;
+  --accent-dark: #2563b0;
+  --secondary:   #7c5cd8;
+  --success:     #16a34a;
+  --warning:     #d97706;
+  --danger:      #dc2626;
+  --radius:      8px;
+  --shadow:      0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.10);
+  --nav-h:       60px;
+  --sidebar-w:   240px;
+}
+
+html { font-size: 15px; scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; display: block; }
+
+h1, h2, h3, h4 { line-height: 1.3; font-weight: 600; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.15rem; }
+h4 { font-size: 1rem; }
+
+p { color: var(--muted); }
+
+/* ---- Layout ---- */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
+.container--sm { max-width: 760px; margin: 0 auto; padding: 0 1.25rem; }
+
+/* ---- Navigation ---- */
+.nav {
+  height: var(--nav-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav__brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav__brand span { color: var(--accent); }
+.nav__links { display: flex; align-items: center; gap: 1.5rem; }
+.nav__links a { color: var(--muted); font-size: 0.9rem; font-weight: 500; }
+.nav__links a:hover { color: var(--text); text-decoration: none; }
+.nav__links a.active { color: var(--accent); }
+.nav__hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav__hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); margin: 5px 0; border-radius: 2px;
+  transition: 0.2s;
+}
+
+/* ---- Hero (landing) ---- */
+.hero {
+  padding: 5rem 0 4rem;
+  text-align: center;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.hero__badge {
+  display: inline-block;
+  background: #eff6ff;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+  border: 1px solid #bfdbfe;
+}
+.hero h1 { margin-bottom: 1rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+.hero h1 span { color: var(--accent); }
+.hero p { font-size: 1.05rem; max-width: 520px; margin: 0 auto 2rem; }
+.hero__actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+/* ---- Features grid ---- */
+.features { padding: 4rem 0; }
+.section-header { text-align: center; margin-bottom: 2.5rem; }
+.section-header p { margin-top: 0.5rem; }
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ---- Page layout (dashboard + inner pages) ---- */
+.app-layout { display: flex; min-height: calc(100vh - var(--nav-h)); }
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.sidebar__section { padding: 0.25rem 0 1rem; }
+.sidebar__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 1.25rem;
+  margin-bottom: 0.4rem;
+}
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1.25rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.sidebar__link:hover { background: var(--surface); color: var(--text); text-decoration: none; }
+.sidebar__link.active { color: var(--accent); background: #eff6ff; border-left-color: var(--accent); }
+.sidebar__icon { font-size: 1rem; width: 1.1rem; text-align: center; }
+
+.main-content { flex: 1; padding: 2rem 1.5rem; min-width: 0; }
+
+/* ---- Page header ---- */
+.page-header { margin-bottom: 1.75rem; }
+.page-header h2 { color: var(--text); }
+.page-header p { margin-top: 0.25rem; }
+
+/* ---- Footer ---- */
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ---- AI Demo Banner ---- */
+.ai-banner {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius);
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  color: #92400e;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ai-banner.ai-banner--live {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  h1 { font-size: 1.6rem; }
+  .nav__links { display: none; }
+  .nav__links.open { display: flex; flex-direction: column; position: absolute; top: var(--nav-h); left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem; gap: 1rem; }
+  .nav__hamburger { display: block; }
+  .sidebar { display: none; }
+  .sidebar.open { display: block; position: fixed; top: var(--nav-h); left: 0; z-index: 90; height: calc(100vh - var(--nav-h)); }
+  .main-content { padding: 1.25rem 1rem; }
+  .hero { padding: 3rem 0 2.5rem; }
+}
+
+@media (max-width: 480px) {
+  .features__grid { grid-template-columns: 1fr; }
+  .hero__actions { flex-direction: column; align-items: center; }
+}

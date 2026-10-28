@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concept Explainer — AI StudyMate</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav__inner">
+    <a href="../index.html" class="nav__brand">🎓 AI <span>StudyMate</span></a>
+    <div class="nav__links" id="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../dashboard.html">Dashboard</a>
+      <a href="summarizer.html">Summarizer</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="explainer.html" class="active">Explainer</a>
+      <a href="scheduler.html">Scheduler</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <button class="btn btn--outline btn--sm" id="settings-btn">⚙ Settings</button>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__label">Main</div>
+      <a href="../dashboard.html" class="sidebar__link"><span class="sidebar__icon">🏠</span> Dashboard</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">AI Tools</div>
+      <a href="summarizer.html" class="sidebar__link"><span class="sidebar__icon">📝</span> Note Summarizer</a>
+      <a href="quiz.html" class="sidebar__link"><span class="sidebar__icon">🧪</span> Practice Quiz</a>
+      <a href="explainer.html" class="sidebar__link active"><span class="sidebar__icon">💡</span> Concept Explainer</a>
+      <a href="scheduler.html" class="sidebar__link"><span class="sidebar__icon">📅</span> Study Scheduler</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">Account</div>
+      <a href="#" class="sidebar__link" id="settings-btn-side"><span class="sidebar__icon">⚙</span> Settings</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="ai-banner" id="ai-status-banner">⚠️ No API key configured.</div>
+
+    <div class="page-header">
+      <h2>💡 Concept Explainer</h2>
+      <p>Type any concept or term — the AI will explain it in plain language with analogies and examples.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+
+      <!-- Input -->
+      <div class="card">
+        <div class="card__header"><h3>Ask a Concept</h3></div>
+        <div class="card__body">
+          <div class="form-group">
+            <label class="form-label" for="concept-input">Concept or Term *</label>
+            <input type="text" class="form-control" id="concept-input"
+              placeholder="e.g. Quantum entanglement, Supply & demand, Recursion…">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="level-select">Explanation Level</label>
+            <select class="form-control" id="level-select">
+              <option value="high school student">High School</option>
+              <option value="undergraduate" selected>Undergraduate</option>
+              <option value="graduate">Graduate / Advanced</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--primary" id="explain-btn">💡 Explain This</button>
+            <button class="btn btn--ghost" id="clear-explain-btn">Clear</button>
+          </div>
+
+          <!-- Quick suggestions -->
+          <hr class="divider">
+          <p style="font-size:0.82rem;font-weight:600;color:var(--muted);margin-bottom:0.6rem;">TRY THESE EXAMPLES</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;" id="suggestions">
+            <button class="btn btn--outline btn--sm suggest-btn">Photosynthesis</button>
+            <button class="btn btn--outline btn--sm suggest-btn">Newton's 3rd Law</button>
+            <button class="btn btn--outline btn--sm suggest-btn">Machine Learning</button>
+            <button class="btn btn--outline btn--sm suggest-btn">Inflation</button>
+            <button class="btn btn--outline btn--sm suggest-btn">DNA Replication</button>
+            <button class="btn btn--outline btn--sm suggest-btn">Recursion</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output -->
+      <div class="card">
+        <div class="card__header">
+          <h3>Explanation</h3>
+          <button class="btn btn--outline btn--sm" id="copy-explain-btn" style="display:none;">Copy</button>
+        </div>
+        <div class="card__body">
+          <div class="result-box result-box--empty" id="explain-output">
+            Your explanation will appear here.
+          </div>
+        </div>
+        <div class="card__footer" id="explain-footer" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.82rem;color:var(--muted);" id="explain-meta"></span>
+            <button class="btn btn--outline btn--sm" id="save-explain-btn">💾 Save</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Saved explanations -->
+    <div style="margin-top:2rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+        <h3>Saved Explanations</h3>
+        <button class="btn btn--ghost btn--sm" id="refresh-explain-history">Refresh</button>
+      </div>
+      <div id="explain-history-list"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Settings Modal -->
+<div id="settings-overlay" hidden style="position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;"></div>
+<div id="settings-modal" hidden role="dialog" aria-modal="true"
+  style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:210;width:90%;max-width:440px;">
+  <div class="card">
+    <div class="card__header">
+      <h3>⚙ Settings</h3>
+      <button class="btn btn--ghost btn--sm" id="settings-close">✕</button>
+    </div>
+    <div class="card__body">
+      <form id="settings-form">
+        <div class="form-group">
+          <label class="form-label" for="api-key-input">Groq API Key</label>
+          <input type="password" class="form-control" id="api-key-input" placeholder="gsk_..." autocomplete="off">
+          <p class="form-hint">Stored only in your browser and sent directly to api.groq.com. Get a free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>.</p>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Save</button>
+          <span id="settings-saved" style="display:none;color:var(--success);font-size:0.88rem;">✓ Saved!</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  document.getElementById('settings-btn-side')?.addEventListener('click', e => {
+    e.preventDefault(); document.getElementById('settings-btn')?.click();
+  });
+
+  let lastExplain = null;
+
+  const btn      = document.getElementById('explain-btn');
+  const output   = document.getElementById('explain-output');
+  const footer   = document.getElementById('explain-footer');
+  const meta     = document.getElementById('explain-meta');
+  const copyBtn  = document.getElementById('copy-explain-btn');
+  const saveBtn  = document.getElementById('save-explain-btn');
+
+  // Quick suggestions
+  document.querySelectorAll('.suggest-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.getElementById('concept-input').value = b.textContent;
+    });
+  });
+
+  document.getElementById('clear-explain-btn').addEventListener('click', () => {
+    document.getElementById('concept-input').value = '';
+    renderEmpty(output, 'Your explanation will appear here.');
+    footer.style.display = 'none';
+    copyBtn.style.display = 'none';
+    lastExplain = null;
+  });
+
+  btn.addEventListener('click', async () => {
+    const concept = document.getElementById('concept-input').value.trim();
+    if (!concept) { alert('Please enter a concept.'); return; }
+    const level = document.getElementById('level-select').value;
+    setLoading(btn, output, true, 'Explaining…');
+    const res = await aiExplain(concept, level);
+    setLoading(btn, null, false);
+    if (res.errorMessage) showErrorMessage(output.parentElement, res.errorMessage);
+    renderResult(output, res.text, res.isDemo);
+    lastExplain = { concept, text: res.text, isDemo: res.isDemo };
+    meta.textContent = `"${concept}" · ${level} · ${res.isDemo ? '🎓 Demo' : '✅ Live AI'} response`;
+    footer.style.display = '';
+    copyBtn.style.display = '';
+    refreshAiBanner();
+  });
+
+  // Allow Enter key to trigger explain
+  document.getElementById('concept-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') btn.click();
+  });
+
+  copyBtn.addEventListener('click', () => {
+    if (lastExplain) navigator.clipboard.writeText(lastExplain.text).then(() => {
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => copyBtn.textContent = 'Copy', 1500);
+    });
+  });
+
+  saveBtn.addEventListener('click', () => {
+    if (!lastExplain) return;
+    saveExplanation({ concept: lastExplain.concept, preview: lastExplain.text.slice(0, 80), full: lastExplain.text });
+    saveBtn.textContent = '✓ Saved!';
+    setTimeout(() => saveBtn.textContent = '💾 Save', 1500);
+    loadHistory();
+  });
+
+  document.getElementById('refresh-explain-history').addEventListener('click', loadHistory);
+
+  function loadHistory() {
+    const el   = document.getElementById('explain-history-list');
+    const list = getExplanations();
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-state"><div class="empty-state__icon">💡</div><p>No saved explanations yet.</p></div>';
+      return;
+    }
+    el.innerHTML = '<div class="history-list">' + list.map(x => `
+      <div class="history-item">
+        <div class="history-item__icon">💡</div>
+        <div class="history-item__meta">
+          <div class="history-item__title">${escHtml(x.concept)}</div>
+          <div class="history-item__desc">${escHtml(x.preview)}…</div>
+        </div>
+        <span class="history-item__time">${timeAgo(x.ts)}</span>
+      </div>`).join('') + '</div>';
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  loadHistory();
+</script>
+</body>
+</html>

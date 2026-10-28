@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Scheduler — AI StudyMate</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav__inner">
+    <a href="../index.html" class="nav__brand">🎓 AI <span>StudyMate</span></a>
+    <div class="nav__links" id="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../dashboard.html">Dashboard</a>
+      <a href="summarizer.html">Summarizer</a>
+      <a href="quiz.html">Quiz</a>
+      <a href="explainer.html">Explainer</a>
+      <a href="scheduler.html" class="active">Scheduler</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <button class="btn btn--outline btn--sm" id="settings-btn">⚙ Settings</button>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__label">Main</div>
+      <a href="../dashboard.html" class="sidebar__link"><span class="sidebar__icon">🏠</span> Dashboard</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">AI Tools</div>
+      <a href="summarizer.html" class="sidebar__link"><span class="sidebar__icon">📝</span> Note Summarizer</a>
+      <a href="quiz.html" class="sidebar__link"><span class="sidebar__icon">🧪</span> Practice Quiz</a>
+      <a href="explainer.html" class="sidebar__link"><span class="sidebar__icon">💡</span> Concept Explainer</a>
+      <a href="scheduler.html" class="sidebar__link active"><span class="sidebar__icon">📅</span> Study Scheduler</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__label">Account</div>
+      <a href="#" class="sidebar__link" id="settings-btn-side"><span class="sidebar__icon">⚙</span> Settings</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="ai-banner" id="ai-status-banner">⚠️ No API key configured.</div>
+
+    <div class="page-header">
+      <h2>📅 Study Scheduler</h2>
+      <p>Build your weekly study plan manually or let AI generate one for you.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" data-tabs id="scheduler-tabs">
+      <button class="tab" data-target="tab-manual">📋 Manual Schedule</button>
+      <button class="tab" data-target="tab-ai">✨ AI Plan Generator</button>
+    </div>
+
+    <!-- Tab: Manual -->
+    <div class="tab-panel" id="tab-manual">
+      <!-- Add task form -->
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div class="card__header"><h3>Add a Task</h3></div>
+        <div class="card__body">
+          <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0.75rem;align-items:end;">
+            <div class="form-group" style="margin:0;">
+              <label class="form-label" for="task-text">Task</label>
+              <input type="text" class="form-control" id="task-text" placeholder="e.g. Read Chapter 3, Practice problems…">
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label class="form-label" for="task-day">Day</label>
+              <select class="form-control" id="task-day">
+                <option>Mon</option><option>Tue</option><option>Wed</option>
+                <option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label class="form-label" for="task-time">Time <span>(opt)</span></label>
+              <input type="time" class="form-control" id="task-time">
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label class="form-label" for="task-color">Colour</label>
+              <select class="form-control" id="task-color">
+                <option value="blue">Blue</option>
+                <option value="purple">Purple</option>
+                <option value="green">Green</option>
+                <option value="orange">Orange</option>
+              </select>
+            </div>
+            <div style="padding-bottom:0;">
+              <button class="btn btn--primary" id="add-task-btn" style="white-space:nowrap;">+ Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule grid -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+        <h3>This Week</h3>
+        <button class="btn btn--ghost btn--sm" id="clear-schedule-btn" style="color:var(--danger);">Clear All</button>
+      </div>
+      <div class="schedule-grid" id="schedule-grid"></div>
+    </div>
+
+    <!-- Tab: AI Plan -->
+    <div class="tab-panel" id="tab-ai">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+        <div class="card">
+          <div class="card__header"><h3>Generate Study Plan</h3></div>
+          <div class="card__body">
+            <div class="form-group">
+              <label class="form-label" for="plan-subject">Subject *</label>
+              <input type="text" class="form-control" id="plan-subject" placeholder="e.g. Organic Chemistry, Statistics…">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Available Days</label>
+              <div style="display:flex;flex-wrap:wrap;gap:0.4rem;" id="days-selector">
+                <label class="btn btn--outline btn--sm day-check-label" style="cursor:pointer;">
+                  <input type="checkbox" value="Mon" checked style="display:none;"> Mon
+                </label>
+                <label class="btn btn--outline btn--sm day-check-label" style="cursor:pointer;">
+                  <input type="checkbox" value="Tue" checked style="display:none;"> Tue
+                </label>
+                <label class="btn btn--outline btn--sm day-check-label" style="cursor:pointer;">
+                  <input type="checkbox" value="Wed" checked style="display:none;"> Wed
+                </label>
+                <label class="btn btn--outline btn--sm day-check-label" style="cursor:pointer;">
+                  <input type="checkbox" value="Thu" checked style="display:none;"> Thu
+                </label>
+                <label class="btn btn--outline btn--sm day-check-label" style="cursor:pointer;">
+                  <input type="checkbox" value="Fri" checked style="display:none;"> Fri
+                </label>
+                <label class="btn btn--outline btn--sm day-check-label" style="cursor:pointer;">
+                  <input type="checkbox" value="Sat" style="display:none;"> Sat
+                </label>
+                <label class="btn btn--outline btn--sm day-check-label" style="cursor:pointer;">
+                  <input type="checkbox" value="Sun" style="display:none;"> Sun
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hours-per-day">Hours per day</label>
+              <select class="form-control" id="hours-per-day">
+                <option value="1">1 hour</option>
+                <option value="2" selected>2 hours</option>
+                <option value="3">3 hours</option>
+                <option value="4">4 hours</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn--primary" id="generate-plan-btn">✨ Generate Plan</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <h3>AI-Generated Plan</h3>
+            <button class="btn btn--outline btn--sm" id="import-plan-btn" style="display:none;">+ Import to Schedule</button>
+          </div>
+          <div class="card__body">
+            <div class="result-box result-box--empty" id="plan-output">
+              Your AI-generated study plan will appear here.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /tab-ai -->
+
+  </main>
+</div>
+
+<!-- Settings Modal -->
+<div id="settings-overlay" hidden style="position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;"></div>
+<div id="settings-modal" hidden role="dialog" aria-modal="true"
+  style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:210;width:90%;max-width:440px;">
+  <div class="card">
+    <div class="card__header">
+      <h3>⚙ Settings</h3>
+      <button class="btn btn--ghost btn--sm" id="settings-close">✕</button>
+    </div>
+    <div class="card__body">
+      <form id="settings-form">
+        <div class="form-group">
+          <label class="form-label" for="api-key-input">Groq API Key</label>
+          <input type="password" class="form-control" id="api-key-input" placeholder="gsk_..." autocomplete="off">
+          <p class="form-hint">Stored only in your browser and sent directly to api.groq.com. Get a free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>.</p>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Save</button>
+          <span id="settings-saved" style="display:none;color:var(--success);font-size:0.88rem;">✓ Saved!</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/ai.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  document.getElementById('settings-btn-side')?.addEventListener('click', e => {
+    e.preventDefault(); document.getElementById('settings-btn')?.click();
+  });
+
+  // ---- Day checkbox visual toggle ----
+  document.querySelectorAll('.day-check-label').forEach(label => {
+    const cb = label.querySelector('input');
+    function sync() {
+      label.style.background    = cb.checked ? 'var(--accent)' : '';
+      label.style.color         = cb.checked ? '#fff' : '';
+      label.style.borderColor   = cb.checked ? 'var(--accent)' : '';
+    }
+    sync();
+    cb.addEventListener('change', sync);
+    label.addEventListener('click', () => { setTimeout(sync, 0); });
+  });
+
+  // ---- Manual schedule ----
+  const COLORS = ['blue','purple','green','orange'];
+
+  document.getElementById('add-task-btn').addEventListener('click', () => {
+    const text  = document.getElementById('task-text').value.trim();
+    const day   = document.getElementById('task-day').value;
+    const time  = document.getElementById('task-time').value;
+    const color = document.getElementById('task-color').value;
+    if (!text) { alert('Please enter a task.'); return; }
+    addScheduleTask(day, { text, time, color });
+    document.getElementById('task-text').value = '';
+    document.getElementById('task-time').value = '';
+    renderSchedule();
+  });
+
+  document.getElementById('task-text').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('add-task-btn').click();
+  });
+
+  document.getElementById('clear-schedule-btn').addEventListener('click', () => {
+    if (!confirm('Clear the entire schedule?')) return;
+    clearSchedule(); renderSchedule();
+  });
+
+  function renderSchedule() {
+    const grid  = document.getElementById('schedule-grid');
+    const sched = getSchedule();
+    grid.innerHTML = DAYS.map(day => `
+      <div class="schedule-day">
+        <div class="schedule-day__header">${day}</div>
+        ${sched[day].length === 0
+          ? '<div style="padding:0.6rem 1rem;font-size:0.82rem;color:var(--muted);font-style:italic;">No tasks</div>'
+          : sched[day].map(t => `
+            <div class="schedule-task">
+              <div class="schedule-task__dot schedule-task__dot--${t.color || 'blue'}"></div>
+              <div class="schedule-task__text">
+                <div>${escHtml(t.text)}</div>
+                ${t.time ? `<div class="schedule-task__time">${escHtml(t.time)}</div>` : ''}
+              </div>
+              <button class="schedule-task__remove" data-day="${day}" data-id="${t.id}" title="Remove">✕</button>
+            </div>`).join('')}
+      </div>`).join('');
+
+    grid.querySelectorAll('.schedule-task__remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        removeScheduleTask(btn.dataset.day, Number(btn.dataset.id));
+        renderSchedule();
+      });
+    });
+  }
+
+  // ---- AI Plan Generator ----
+  let lastPlan = null;
+
+  document.getElementById('generate-plan-btn').addEventListener('click', async () => {
+    const subject = document.getElementById('plan-subject').value.trim();
+    if (!subject) { alert('Please enter a subject.'); return; }
+    const days = [...document.querySelectorAll('#days-selector input:checked')].map(c => c.value);
+    if (!days.length) { alert('Select at least one day.'); return; }
+    const hours = Number(document.getElementById('hours-per-day').value);
+    const btn   = document.getElementById('generate-plan-btn');
+    const out   = document.getElementById('plan-output');
+    setLoading(btn, out, true, 'Generating…');
+    const res = await aiStudyPlan(subject, days, hours);
+    setLoading(btn, null, false);
+    refreshAiBanner();
+    if (res.errorMessage) showErrorMessage(out.parentElement, res.errorMessage);
+    lastPlan = res.parsed;
+    // Render plan preview
+    const lines = [];
+    Object.entries(res.parsed).forEach(([day, tasks]) => {
+      lines.push(`${day}:`);
+      tasks.forEach(t => lines.push(`  • ${t}`));
+    });
+    renderResult(out, lines.join('\n'), res.isDemo);
+    document.getElementById('import-plan-btn').style.display = '';
+  });
+
+  document.getElementById('import-plan-btn').addEventListener('click', () => {
+    if (!lastPlan) return;
+    const colorMap = { Mon:'blue', Tue:'purple', Wed:'green', Thu:'orange', Fri:'blue', Sat:'purple', Sun:'green' };
+    Object.entries(lastPlan).forEach(([day, tasks]) => {
+      if (!DAYS.includes(day)) return;
+      tasks.forEach(t => {
+        if (t.includes('[DEMO]')) return;
+        addScheduleTask(day, { text: t, color: colorMap[day] || 'blue' });
+      });
+    });
+    // Switch to manual tab to see result
+    document.querySelector('[data-target="tab-manual"]')?.click();
+    renderSchedule();
+  });
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  renderSchedule();
+  // Init tabs
+  document.querySelectorAll('[data-tabs]').forEach(initTabs);
+</script>
+</body>
+</html>
